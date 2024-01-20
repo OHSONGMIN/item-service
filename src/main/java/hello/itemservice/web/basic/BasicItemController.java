@@ -102,6 +102,20 @@ public class BasicItemController {
     } //String int 같은 단순 타입들이 오면 RequestParam
     //Item같은 객체가 오면 ModelAttribute가 적용된다.
 
+    @GetMapping("/{itemId}/edit")
+    public String editForm(@PathVariable Long itemId, Model model) {
+        Item item = itemRepository.findById(itemId);
+        model.addAttribute("item", item);
+        return "basic/editForm";
+    }
+
+    @PostMapping("/{itemId}/edit") //edit도 GET방식, POST방식 2개로 나눠보자
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
+        itemRepository.update(itemId, item);
+        return "redirect:/basic/items/{itemId}"; //상품 상세로 완전히 처음부터 이동한 것
+    }
+
+
 
     /**
      * 테스트용 데이터 추가
